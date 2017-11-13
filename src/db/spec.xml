@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+ <mapper namespace="Spec">
+ 	<resultMap id="SpecResult" type="spec.SpecDataBean">
+		<result property="workout_name" column="workout_name" />
+		<result property="spec_date" column="spec_date" />
+		<result property="gender" column="gender"/>
+		<result property="age" column="age"/>
+		<result property="user_id" column="user_id"/>
+		<result property="height" column="height"/>
+		<result property="weight" column="weight"/>
+		<result property="goal" column="goal"/>
+		<result property="weekly_ex_num" column="weekly_ex_num"/>
+		<result property="date_lately" column="date_lately"/>
+		<result property="fat" column="fat"/>
+		<result property="muscle" column="muscle"/>
+	</resultMap>
+  	<insert id="insertSpec" parameterType="spec.SpecDataBean">
+  		insert into specs values( 
+  		#{spec_date}, #{gender}, #{age}, #{user_id}, #{height},
+  		#{weight}, #{goal}, #{weekly_ex_num}, 
+  		#{date_lately}, #{fat,jdbcType=FLOAT}, #{muscle,jdbcType=FLOAT})	
+  	</insert>
+  	<update id="updateTodaySpec" parameterType="spec.SpecDataBean">
+  		update specs
+  		<set> 
+  			<if test="age != null">age=#{age},</if>
+  			<if test="height != null">height=#{height},</if>
+  			<if test="weight != null">weight=#{weight},</if>
+  			<if test="goal != null">goal=#{goal},</if>
+  			<if test="weekly_ex_num != null">weekly_ex_num=#{weekly_ex_num},</if>
+  			<if test="date_lately != null">date_lately=#{date_lately},</if>
+	  		<if test="fat != null">fat=#{fat},</if>
+	  		<if test="muscle != null">muscle=#{muscle}</if>
+  		</set>
+		where user_id=#{user_id} and to_char(spec_date,'yyyy/mm/dd')=to_char(sysdate,'yyyy/mm/dd')
+  	</update>
+  	<select id="getAllSpec" parameterType="String" resultMap="SpecResult">
+  		select * from specs where user_id=#{user_id}
+  	</select>
+  	<select id="getLatelySpec" parameterType="String" resultType="spec.SpecDataBean">
+  		select * from specs where user_id=#{user_id} and spec_date=(
+  			select max(spec_date) from specs where user_id=#{user_id}
+  		)
+  	</select>
+  	<select id="checkSpecExist" parameterType="String" resultType="java.lang.Integer">
+  		select count(*) from specs where user_id=#{user_id}
+  	</select>
+  	<select id="checkTodaySpec" parameterType="String" resultType="java.lang.Integer">
+  		select count(*) from specs where user_id=#{user_id} and to_char(spec_date,'yyyy/mm/dd')=to_char(sysdate,'yyyy/mm/dd')
+  	</select>
+  	<delete id="deleteSpec" parameterType="String">
+  		delete from specs where user_id=#{user_id}
+  	</delete>
+  	
+  	 <select id="getCount" resultType="java.lang.Integer">
+  		select count(*) from users
+  		
+  	</select>
+  	
+  	<select id="getUsersSpec" parameterType="java.util.Map"  resultType="spec.UsersSetDataBean">
+	select user_id, name,gender,age,email,weight,height,reg_date,expire_date, r from(
+        select u.user_Id,u.name,sp.gender,sp.age,u.email,sp.weight,sp.height,u.reg_date,u.expire_date,rownum r
+         from (select * from specs where rowid in(select max(rowid) from specs group BY user_id)) sp, (select * from users where rowid in(select max(rowid) from users group BY user_id)) u where u.user_id=sp.user_id(+) order by u.user_id desc  
+        )where r &gt;= #{start} and r &lt;= #{end}		
+  	</select>
+  	 <select id="getUserSpec" parameterType="String"  resultType="spec.UsersSetDataBean">
+		select user_id, name,
+      nvl(gender,0) as gender,
+      nvl(age,0) as age,
+      nvl(email,'0') as email,
+        nvl(weight,0)as weight,
+        nvl(height,0)as height,
+        reg_date,
+        expire_date,
+        r from(
+        select u.user_Id,u.name,sp.gender,sp.age,u.email,sp.weight,sp.height,u.reg_date,u.expire_date,rownum r from (select * from specs where rowid in(select max(rowid) from specs group BY user_id)) sp, users u where u.user_id=sp.user_id(+) order by u.user_id desc
+        ) where user_id=#{user_id}
+    </select>
+      
+      <update id="updateUserSpec" parameterType="spec.UsersSetDataBean" >
+  		update specs
+  		<set> 
+  			<if test="age != null">age=#{age},</if>
+  			<if test="gender != null">gender=#{gender},</if>
+  			<if test="height != null">height=#{height},</if>
+  			<if test="weight != null">weight=#{weight},</if>
+  		</set>
+		where user_id=#{user_id}
+  	</update>
+  	  <select id="selectUserSpec" parameterType="spec.UsersSetDataBean">
+  		select * from specs where user_id=#{user_id}
+  	</select>
+  	
+  <insert id="insertUserSpec" parameterType="spec.UsersSetDataBean" >
+      insert into specs(user_id,height,weight,gender,age,spec_date,goal,weekly_ex_num,date_lately) values(#{user_id},#{height},#{weight},#{gender},#{age},'01/01/2007',3,2,3);
+  	</insert>
+  	
+  	<update id="addMonth" parameterType="java.util.Map" >
+  	  	 update users 
+  	  	 <set>
+		  	<if test="reg_date == null">
+			 expire_date=(select add_months( SYSTIMESTAMP, #{month} ) from dual),reg_date=SYSTIMESTAMP,msgCheck='4',
+		  	</if>
+		  	<if test="reg_date != null">
+			  	<if test="expire_date != null">
+				 expire_date=(select add_months( (select expire_date from users where user_id=#{user_id}), #{month} ) from dual),msgCheck='4',
+			      </if>
+			      <if test="expire_date == null">
+				  expire_date=(select add_months( (select reg_date from users where user_id=#{user_id}), #{month} ) from dual),msgCheck='4',
+			      </if>
+		  	</if>
+  		</set>
+  		where user_id=#{user_id}
+  	</update>
+
+  	
+  	 <update id="signMem" parameterType="String" >      
+            update users set expire_date=sysdate where user_id=#{user_id}
+  	</update>
+  	  	
+  	<update id="cancelMem" parameterType="String" >
+
+            update users set expire_date= null where user_id=#{user_id}
+            
+  	</update>
+  	
+  	<select id="UserSearch" parameterType="String" resultType="spec.UsersSetDataBean">
+		select user_id, name,gender,age,email,weight,height,reg_date,expire_date, r from(
+        select u.user_Id,u.name,sp.gender,sp.age,u.email,sp.weight,sp.height,u.reg_date,u.expire_date,rownum r
+         from (select * from specs where rowid in(select max(rowid) from specs group BY user_id)) sp, (select * from users where rowid in(select max(rowid) from users group BY user_id)) u where u.user_id=sp.user_id(+) order by u.user_id desc  
+        )where name like '%' || #{name} || '%'
+  	</select>
+ </mapper>

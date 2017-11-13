@@ -1,0 +1,56 @@
+@CHARSET "UTF-8";
+/* Remove the navbar's default margin-bottom and rounded borders */ 
+.navbar {
+  margin-bottom: 0;
+  border-radius: 0;
+}
+
+/* Add a gray background color and some padding to the footer */
+  footer {
+    background-color: #f2f2f2;
+    padding: 25px;
+  }
+.graph{
+	background: white;
+}
+.well-sm{
+	height: 300px;
+    padding: 15px 0 15px 0;
+    border: none;
+    background: none;
+    border-radius: 0;
+   
+}
+.well-sm p{
+	font-size: 100%;
+}
+.carousel-inner img {
+    width: 100%; /* Set width to 100% */
+    margin: auto;
+    min-height:200px;
+}
+
+/* Hide the carousel text when the screen is less than 600 pixels wide */
+@media (max-width: 600px) {
+  .carousel-caption {
+    display: none; 
+  }
+}
+/*Customizing*/
+.alert{
+	z-index: 1;
+}
+.colored{
+	background-color:lightgray;
+	border:1px;
+	border-color:white;
+}
+/*D3.js*/
+.arc text {
+  font: 10px sans-serif;
+  text-anchor: middle;
+}
+
+.arc path {
+  stroke: #fff;
+}

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+ <mapper namespace="Schedule">  
+ 	<resultMap id="ScheduleResult" type="schedule.ScheduleDataBean">
+		<result property="sche_date" column="sche_date" />
+		<result property="spec_date" column="spec_date" />
+		<result property="user_id" column="user_id" />
+		<result property="sche_num" column="sche_num" />
+		<result property="workout_name" column="workout_name" />
+		<result property="sche_set" column="sche_set" />
+		<result property="set_num" column="set_num" />
+		<result property="complete" column="complete" />
+		<result property="gadget_num" column="gadget_num" />
+	</resultMap>
+	<resultMap id="ScheduleWorkoutResult" type="schedule.ScheduleAndWorkoutDataBean">
+		<result property="sche_date" column="sche_date" />
+		<result property="spec_date" column="spec_date" />
+		<result property="user_id" column="user_id" />
+		<result property="sche_num" column="sche_num" />
+		<result property="workout_name" column="workout_name" />
+		<result property="sche_set" column="sche_set" />
+		<result property="set_num" column="set_num" />
+		<result property="complete" column="complete" />
+		<result property="gadget_num" column="gadget_num" />
+		<result property="workout_part" column="workout_part" />
+		<result property="workout_type" column="workout_type" />
+	</resultMap>
+ 		
+  	<insert id="insertSchedule" parameterType="schedule.ScheduleDataBean">
+  		insert into schedules values(
+  		#{sche_date}, #{spec_date}, #{user_id}, #{sche_num},
+  		#{workout_name}, #{sche_set},#{set_num}, #{complete,jdbcType=INTEGER},
+  		#{gadget_num,jdbcType=VARCHAR})		
+  	</insert>
+  	<select id="getScheduleList" resultMap="ScheduleResult" parameterType="schedulelist.ScheduleListDataBean">
+  		select * from schedules where user_id=#{user_id} and sche_date=#{sche_date}
+  	</select>
+  	<select id="todayScheList" resultMap="ScheduleResult" parameterType="String">
+  		select * from schedules where user_id=#{user_id} and sche_date=to_char(sysdate,'yyyy/mm/dd')
+  	</select>
+  	<select id="dayScheCompleteOrNot" resultType="int" parameterType="schedule.ScheduleDataBean">
+  		select count(*) from sche_complete_count where user_id=#{user_id} and sche_all-sche_com=sche_all and sche_date=to_char(cast(#{sche_date} as date),'yyyy/mm/dd')
+  	</select>
+  	<delete id="deleteSche" parameterType="schedule.ScheduleDataBean">
+	  	delete from schedules where user_id=#{user_id} and sche_date=to_char(cast(#{sche_date} as date),'yyyy/mm/dd')
+  	</delete>
+  	<delete id="deleteScheAll" parameterType="String">
+  		delete from schedules where user_id=#{user_id}
+  	</delete>
+  	<update id="updateScheOne" parameterType="schedule.ScheduleDataBean">
+  		update schedules set workout_name=#{workout_name}, sche_set=#{sche_set}, set_num=#{set_num} where user_id=#{user_id} and sche_num=#{sche_num} and sche_date=to_char(cast(#{sche_date} as date),'yyyy/mm/dd')
+  	</update>
+  	<update id="updateComplete" parameterType="schedule.ScheduleDataBean">
+  		update schedules set complete=1 where user_id=#{user_id} and sche_num=#{sche_num} and sche_date=to_char(cast(#{sche_date} as date),'yyyy/mm/dd')
+  	</update>
+  	<update id="updateReduceOne" parameterType="String">
+  		update schedules set sche_set=sche_set-1 where user_id=#{user_id} and sche_set > 2 and sche_date &gt; to_char(sysdate,'yyyy/mm/dd')
+  	</update>
+  	<update id="updateAddTwo" parameterType="String">
+  		update schedules set sche_set=sche_set+2 where user_id=#{user_id} and sche_date &gt; to_char(sysdate,'yyyy/mm/dd') and (workout_name like '%스트레%' or workout_name like '%스트래%')
+  	</update>
+  	<select id="getWorkoutTypeComplete" resultMap="ScheduleWorkoutResult" parameterType="schedule.ScheduleDataBean">
+  		select s.sche_date, s.complete, w.workout_type from schedules s, workouts w where user_id=#{user_id} and w.workout_name=s.workout_name
+  	</select>
+ </mapper>

@@ -1,0 +1,109 @@
+@CHARSET "UTF-8";
+ /* Remove the navbar's default margin-bottom and rounded borders */ 
+ .navbar {
+   margin-bottom: 0;
+   border-radius: 0;
+ }
+ 
+ /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+ .row.content {height: 450px}
+ .row.row-sche {height: 150px}
+ .panel{height: 150px}
+ .panel-past .panel-heading{
+ 	background: lightgray;
+ 	color: gray;
+ }
+ .panel-past .panel-body{
+ 	background: lightgray;
+ }
+ .panel-past .panel-body .list-group .list-group-item{
+ 	background: gray;
+ 	color: lightgray;
+ }
+ .panel-today .panel-heading{
+ 	background: #CCFF00;
+ }
+ .panel-today .panel-body{
+ 	background: #CCFF00;
+ }
+ .panel-today .panel-body .list-group .list-group-item{
+ 	background: #CCFF00;
+ 	color: #2d2d30;
+ 	border-color: #2d2d30;
+ }
+ .panel-today .panel-body .list-group .list-group-item .badge{
+ 	background: #2d2d30;
+ }
+ .panel-future .panel-heading{
+ 	color: white;
+ 	background: #2d2d30;
+ }
+ .panel-future .panel-body{
+ 	color: white;
+ 	background: #2d2d30;
+ }
+ /* Set gray background color and 100% height */
+ .sidenav {
+   padding-top: 20px;
+   background-color: #2d2d30;
+   height: 100%;
+ }
+  .side-menu > p{
+ 	width:100%;
+ 	font-weight: bold;
+ 	background:none;
+ 	transition: 1s;
+  }
+  .side-menu > p>a{
+    width:100%;
+  	color:white;
+  	transition: 1s;
+  }
+  .side-menu > p:hover{
+	color:#000;
+ 	background:white;
+ }
+   .side-menu > p>a:hover{
+  	color:#000;
+  	text-decoration: none;
+  }
+ 
+ /* Set black background color, white text and some padding */
+ footer {
+   background-color: #555;
+   color: white;
+   padding: 15px;
+ }
+ 
+ /* On small screens, set height to 'auto' for sidenav and grid */
+@media screen and (max-width: 767px) {
+   .sidenav {
+     height: auto;
+     padding: 15px;
+   }
+   .row.content {height:auto;} 
+ }
+ 
+	.row-form > .form{
+ 	margin-top:10%;
+ 	border:1px solid white;
+ 	border-radius:20px;
+ 	background:white;
+ 	height:auto;
+ }
+ .btn.btn-neon{
+ 	border:none;
+ 	background:#CCFF00;
+ }
+  .btn.btn-black{
+ 	border:none;
+ 	background:#002200;
+ 	color:white;
+ }
+body
+{
+	background-image: url("/MFC/img/member/background_wideFull.jpg");
+	background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}

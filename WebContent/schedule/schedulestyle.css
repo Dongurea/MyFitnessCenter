@@ -1,0 +1,140 @@
+@CHARSET "UTF-8";
+/*Customizing*/
+.start-new-sche{
+	background-color: #2d2d30;
+	color:white;
+    animation: infi-ani 10s infinite;
+}
+@keyframes infi-ani {
+    0% {background-color: #2d2d30;color:white;border-color:#2d2d30;}
+    50% {background-color: #777777;color:black;border-color:#777777;}
+    100%{background-color: #2d2d30;color:white;border-color:#2d2d30;}
+}
+.text-center > .spec-well{
+	border: none;
+    border-radius: 0;
+}
+.btn-clear{
+	background:transparent;
+	border:none;
+}
+.btn-clear:focus { 
+    outline: none;
+}
+.btn-group.btn-achieve-g{
+	border:none;
+	border-radius:2px;
+}
+.btn-group.btn-achieve-g:hover{
+	border:none;
+	border-radius:2px;
+}
+.btn-group.btn-achieve-g:focus{
+	border:none;
+	border-radius:2px;
+}
+
+.btn-achieve{
+	color:white;
+	background:#2d2d30;
+	border:none;
+}
+.btn-success{
+	padding: 5px;
+	background:#CCFF00;
+	color:#2d2d30;
+	border:none;
+	transition: 2s;
+}
+.btn-success.show-video{
+	border-radius:50px;
+	padding: 3px 10px 3px 10px;
+	font-size: 80%;
+}
+.btn-success:hover{
+	background:#293300;
+}
+button:focus{
+	outline:0;
+}
+.btn-group {
+	color: white;
+	background: #2d2d30;
+	transition: 1s;
+}
+.btn-group >a {
+	color: white;
+}
+.btn-group:hover {
+	background: white;
+	border: 1px solid #2d2d30;
+}
+.btn:focus {
+  outline: none;
+}
+.btn:active{
+  outline: none;
+}
+.well.table-responsive.spec-well{
+	background:white;
+}
+.table.table-black > thead > tr > th{
+	
+}
+
+/* toggle button */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {display:none;}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}

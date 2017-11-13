@@ -1,0 +1,63 @@
+@CHARSET "UTF-8";
+/* Remove the navbar's default margin-bottom and rounded borders */ 
+.navbar {
+  margin-bottom: 0;
+  border-radius: 0;
+}
+
+/* Add a gray background color and some padding to the footer */
+  footer {
+    background-color: #f2f2f2;
+    padding: 25px;
+  }
+.graph{
+	background: white;
+}
+.well-sm{
+	height: 300px;
+    padding: 15px 0 15px 0;
+    border: none;
+    background: none;
+    border-radius: 0;
+   
+}
+.well-sm p{
+	font-size: 100%;
+}
+.carousel-inner img {
+    width: 100%; /* Set width to 100% */
+    margin: auto;
+    min-height:200px;
+}
+
+/* Hide the carousel text when the screen is less than 600 pixels wide */
+@media (max-width: 600px) {
+  .carousel-caption {
+    display: none; 
+  }
+}
+/*Customizing*/
+.sidenav > .nav-pills> .act-color {
+	background:white;
+	transition: 1s;
+}
+ .sidenav > .nav-pills> .act-color> a {
+    background:none;
+    color:#000;
+}
+ .sidenav > .nav-pills> .active {
+    background:#CCFF00;
+    color:#000;
+}
+ .sidenav > .nav-pills> .active> a:hover {
+    background:none;
+    color:#000;
+}
+.sidenav > .nav-pills> .act-color:hover {
+	background:#CCFF00;
+}
+
+.alert{
+	z-index: 1;
+}
+

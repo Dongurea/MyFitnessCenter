@@ -1,0 +1,117 @@
+@CHARSET "UTF-8";
+
+ /* Remove the navbar's default margin-bottom and rounded borders */ 
+.navbar.navbar-inverse {
+  margin-bottom: 0;
+  border-radius: 0;
+}
+
+ 
+ /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+ .row.content {height:auto;}
+ .row.row-sche {height:auto;}
+ .panel{height: auto;}
+ .panel-past .panel-heading{
+ 	background: lightgray;
+ 	color: gray;
+ }
+ .panel-past .panel-body{
+ 	background: lightgray;
+ }
+ .panel-past .panel-body .list-group .list-group-item{
+ 	background: gray;
+ 	color: lightgray;
+ }
+ .panel-today .panel-heading{
+ 	background: #CCFF00;
+ }
+ .panel-today .panel-body{
+ 	background: #CCFF00;
+ }
+ .panel-today .panel-body .list-group .list-group-item{
+ 	background: #CCFF00;
+ 	color: #2d2d30;
+ 	border-color: #2d2d30;
+ }
+ .panel-today .panel-body .list-group .list-group-item .badge{
+ 	background: #2d2d30;
+ }
+ .panel-future .panel-heading{
+ 	color: white;
+ 	background: #2d2d30;
+ }
+ .panel-future .panel-body{
+ 	color: white;
+ 	background: #2d2d30;
+ }
+.panel-future .panel-body .list-group .list-group-item{
+ 	color: white;
+ 	background: #2d2d30;
+ 	border-color: white;
+ }
+ /* Set gray background color and 100% height */
+ .sidenav {
+   padding-top: 20px;
+   background-color: #2d2d30;
+   height: 100%;
+ }
+ 
+ /* Set black background color, white text and some padding */
+ footer {
+   background-color: #555;
+   color: white;
+   padding: 15px;
+ }
+ 
+ /* On small screens, set height to 'auto' for sidenav and grid */
+@media screen and (max-width: 767px) {
+   .sidenav {
+     height: auto;
+     padding: 15px;
+   }
+   .row.content {height:auto;} 
+ }
+ .btn {
+    padding: 10px 20px;
+    background-color: #333;
+    color: #f1f1f1;
+    border-radius: 0;
+    transition: .2s;
+}
+.row .btn {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-right:20px;
+    padding: 10px 20px;
+    border-radius: 0;
+    transition: .2s;
+    border: 1px solid #333;
+    background-color: #fff;
+    color: #000;
+}
+.row .btn.btn-delete{
+	margin-top: 0px;
+	margin-bottom: 0px;
+	margin-right:0px;
+	float: right;
+    padding: 3px 5px;
+    border-radius: 50px;
+    border:none;
+    transition: .2s;
+    background-color: Transparent;
+    color: #000;
+}
+
+.row .btn:hover, .btn:focus{
+	background-color: #333;
+    color: #f1f1f1;
+}
+.panel-future .panel-heading .btn{
+	color: #fff;
+}
+/* On hover, the color of .btn will transition to white with black text */
+.btn:hover, .btn:focus {
+    border: 1px solid #333;
+    background-color: #fff;
+    color: #000;
+}

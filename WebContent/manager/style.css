@@ -1,0 +1,119 @@
+@CHARSET "UTF-8";
+body{
+	background: #2d2d30;
+}
+.jumbotron {
+    background: #2d2d30;
+}
+/* Remove the navbar's default margin-bottom and rounded borders */ 
+.navbar{
+  margin-bottom: 0;
+  border-radius: 0;
+}
+
+/* Add a gray background color and some padding to the footer */
+  footer {
+ 	background: #2d2d30;    
+    background: -webkit-linear-gradient(left top, #2d2d30, #CCFF00);
+    font-size:80%;
+    color: #2d2d30;
+    padding: 25px;
+  }
+  
+.carousel-inner img {
+    width: 100%; /* Set width to 100% */
+    margin: auto;
+    min-height:200px;
+}
+
+/* Hide the carousel text when the screen is less than 600 pixels wide */
+@media (max-width: 600px) {
+  .carousel-caption {
+    display: none; 
+  }
+}
+
+/**/
+.label-primary{
+	color: #2d2d30;
+	background: #CCFF00;
+}
+.list-group-item:first-child {
+	color:white;
+	background: #2d2d30;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+}
+
+.list-group-item:last-child {
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+/* Remove border and add padding to thumbnails */
+.thumbnail {
+	height: 350px;
+    padding: 0 0 15px 0;
+    border: none;
+    border-radius: 0;
+}
+.neon{
+	align-items: center;
+	height: 350px;
+    padding: 0 0 15px 0;
+    border: none;
+    border-radius: 0;
+	background:#CCFF00;
+}
+.neon strong{
+	color:white;
+	font-size:500%;
+}
+.reply-text{
+	
+}
+.reply-text-color{
+	color:white;
+	background-color: #2d2d30;
+}
+.reply-text-color p{
+	font-size:100%;
+}
+.reply-text p{
+	font-size:100%;
+}
+.weather{
+	height: 350px;
+    padding: 0 0 15px 0;
+    border: none;
+    border-radius: 0;
+    background: #CCFF00;
+}
+.panel {
+	height: 350px;
+    padding: 0 0 15px 0;
+    border: none;
+    border-radius: 0;
+}
+.panel-row strong{
+	font-size: 180%;
+}
+.panel-row p{
+	margin-top: 3px;
+	font-size: 70%;
+}
+.table tbody{
+	color:lightgray;
+}
+.table thead{
+	background:#CCFF00;
+}
+.thumbnail .row {
+	margin-top: 5px;
+}
+
+.thumbnail p {
+	font-size: 100%;
+    margin-top: 10px;
+    color: #555;
+}

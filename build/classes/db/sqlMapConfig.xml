@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  	PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<!-- sqlMapConfig.xml -->
+<configuration>
+	<!-- DB 연결 정보 -->
+	<properties resource="db/connect.properties"/>
+	
+	<!-- DB 연결 -->
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC"/>
+			<dataSource type="POOLED">
+				<property name="driver" value="${driver}"/>
+				<property name="url" value="${url}"/>
+				<property name="username" value="${username}"/>
+				<property name="password" value="${password}"/>
+			</dataSource>
+		</environment>
+	</environments>
+	
+	<!-- DB 처리 -->
+	<mappers>
+		<mapper resource="db/member.xml"/>
+		<mapper resource="db/manager.xml"/>
+		<mapper resource="db/board.xml"/>
+		<mapper resource="db/spec.xml"/>
+		<mapper resource="db/schedule.xml"/>
+		<mapper resource="db/schedulelist.xml"/>
+		<mapper resource="db/workout.xml"/>
+		<mapper resource="db/clsBoard.xml"/>
+		<mapper resource="db/chat.xml"/>
+	</mappers>
+</configuration>
+
+
+
+
+
+
+

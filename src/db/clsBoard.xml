@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+ <mapper namespace="ClsBoard">    
+ 	
+ 	 <select id="selectClasses" resultType="clsBoard.ClsBoardDataBean" parameterType="java.util.HashMap">
+       select * from classes
+       <trim prefix="where" prefixOverrides="AND">
+          classdate &gt; #{classdate}
+          <if test="classtimes!=null">
+             and 
+             <foreach item="classtime" index="i" collection="classtimes" open="(" close=")">
+            
+                <if test="i==0">
+                class_time = #{classtime}
+                </if>
+                <if test="i>0">
+                or class_time = #{classtime}
+                </if>   
+             </foreach>
+          </if>
+          
+          <if test="classday!=null">
+             and
+              <foreach item="classday" index="i" collection="classday" open="(" close=")">
+                <if test="i==0">
+                class_day like #{classday}
+                </if>
+                <if test="i>0">
+                or class_day like #{classday}
+                </if> 
+             </foreach>   
+          </if>
+          
+          <if test="subjects!=null">
+             and
+              <foreach item="subject" index="i" collection="subjects" open="(" close=")">
+                <if test="i==0">
+                classname like #{subject}
+                </if>
+                <if test="i>0">
+                or classname like #{subject}
+                </if> 
+             </foreach>   
+          </if>
+       
+       </trim>
+    </select>
+
+ 	<select id="selectInstructors" resultType="String">
+ 		select ins_name from instructors
+ 	</select>
+ 	
+ 	<select id="selectClass" parameterType="java.util.HashMap" resultType="clsBoard.ClsBoardDataBean">
+ 		select * from classes where classname=#{classname} and classdate=#{classdate}
+ 	</select>
+ 	
+ 	<select id="selectInstructor" parameterType="string" resultType="clsBoard.InstructorDataBean">
+ 		select * from instructors where ins_name=#{insname}
+ 	</select>
+ 	
+ 	<select id="selectReplies" parameterType="string" resultType="clsBoard.ReplyDataBean">
+ 		select * from reply where classname=#{classname}
+ 	</select>
+ 	
+ 	<select id="confirmClassstu" parameterType="java.util.HashMap" resultType="int">
+ 		select count(*) from classlist where classname=#{classname} and user_id=#{user_id}
+ 		<if test="classdate!=null">
+ 			and classdate=#{classdate}
+ 		</if>
+ 	</select>
+ 	
+ 	<select id="selectClalistnum" parameterType="java.util.HashMap" resultType="int">
+ 		select cla_list_num from classlist where classname=#{classname} and classdate=#{classdate} and user_id=#{user_id}
+ 	</select>
+ 	
+ 	<select id="selectClassnames" parameterType="java.util.HashMap" resultType="int">
+ 		select count(*) from classes where classname=#{classname} and to_char(classdate, 'MM/YYYY')=to_char(#{classdate}, 'MM/YYYY')
+ 	</select>
+ 	
+ 	<select id="selectClasslist" parameterType="String" resultType="clsBoard.ClasslistDataBean">
+ 		select * from classlist where user_id=#{user_id} order by cla_list_num
+ 	</select>
+ 	
+ 	<select id="selectBestClasses" resultType="clsBoard.ClsBoardDataBean">
+ 		select * from classes where rownum &lt;= 5 order by cur_stu desc
+ 	</select>
+ 	
+ 	<select id="selectRandomReply" resultType="clsBoard.ReplyDataBean">
+ 		select * from reply where rownum &lt;=5
+ 	</select>
+ 	
+ 	<insert id="insertClass" parameterType="clsBoard.ClsBoardDataBean">
+ 		insert into classes
+  		values ( #{classname}, #{class_time}, #{class_intro}, #{tuition}, #{max_stu}, #{cur_stu}, #{ins_name}, #{classdate}, #{link}, #{class_day})
+ 	</insert>
+ 	
+ 	<insert id="insertReply" parameterType="clsBoard.ReplyDataBean">
+ 		insert into reply
+ 		values ( #{reply_num}, #{classname}, #{text}, #{user_id}, (select max(classdate) from classlist where user_id=#{user_id} and classname=#{classname}))
+ 	</insert>
+ 	
+ 	<insert id="insertClasslist" parameterType="java.util.HashMap">
+ 		insert into classlist
+ 		values ( (select count(*) from classlist where user_id=#{user_id})+1 , #{user_id}, #{classname}, #{classdate} )
+ 	</insert>
+ 	
+ 	<update id="updateReply" parameterType="java.util.HashMap">
+ 		update reply set text=#{text}
+  		where user_id=#{user_id} and classname=#{classname} 
+ 	</update>
+ 	
+ 	<update id="updateRepliesNum" parameterType="java.util.HashMap">
+ 		update reply set reply_num=reply_num-1
+  		where classname=#{classname} and reply_num &gt; #{replynum}
+ 	</update>
+ 	
+ 	<update id="updateClass" parameterType="java.util.HashMap">
+ 		update classes 
+ 		set class_time=#{clsBoardDto.class_time}, class_day=#{clsBoardDto.class_day}, class_intro=#{clsBoardDto.class_intro}, tuition=#{clsBoardDto.tuition}, max_stu=#{clsBoardDto.max_stu}, ins_name=#{clsBoardDto.ins_name}
+ 		<if test="clsBoardDto.link!=null">
+ 		, link=#{clsBoardDto.link, jdbcType=VARCHAR} 
+ 		</if>
+  		where classname=#{clsBoardDto.classname} and classdate=#{classdate}
+ 	</update>
+ 	
+ 	<update id="updateClassStu" parameterType="java.util.HashMap">
+ 		update classes set cur_stu=cur_stu+1
+ 		where classname=#{classname} and classdate=#{classdate}
+ 	</update>
+ 	
+ 	<update id="updateClassStudown" parameterType="java.util.HashMap">
+ 		update classes set cur_stu=cur_stu-1
+ 		where classname=#{classname} and classdate=#{classdate}
+ 	</update>
+ 	
+ 	<update id="updateClasslistNum" parameterType="java.util.HashMap">
+ 		update classlist set cla_list_num=cla_list_num-1
+ 		where user_id=#{user_id} and cla_list_num &gt; #{cls_num}
+ 	</update>
+ 	
+ 	<delete id="deleteReply" parameterType="java.util.HashMap">
+ 		delete from reply where user_id=#{user_id} and classname=#{classname}
+ 	</delete>
+ 	
+ 	<delete id="deleteReplies" parameterType="String">
+ 		delete from reply where classname=#{classname}
+ 	</delete>
+ 	
+ 	<delete id="deleteClass" parameterType="String">
+ 		delete from classes where classname=#{classname} and classdate=#{classdate}
+ 	</delete>
+ 	
+ 	<delete id="deleteClasslist" parameterType="java.util.HashMap">
+ 		delete from classlist where classname=#{classname} and classdate=#{classdate} and user_id=#{user_id}
+ 	</delete>
+ 	 	
+ </mapper>

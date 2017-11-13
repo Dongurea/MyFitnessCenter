@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+ <mapper namespace="ScheduleList">  
+ 	<resultMap id="ScheduleListResult" type="schedulelist.ScheduleListDataBean">
+		<result property="walk" column="walk" />
+		<result property="sche_date" column="sche_date" />
+		<result property="achieve" column="achieve" />
+		<result property="spec_date" column="spec_date" />
+		<result property="user_id" column="user_id" />
+		<result property="sche_level" column="sche_level" />
+	</resultMap>
+	
+  	<insert id="insertScheduleList" parameterType="schedulelist.ScheduleListDataBean">
+  		insert into schedulelists values( 
+  			#{walk,jdbcType=INTEGER}, #{sche_date},
+  			#{achieve,jdbcType=INTEGER}, #{spec_date}, #{user_id}, #{sche_level,jdbcType=INTEGER}
+		)
+  	</insert>
+  	<select id="check" parameterType="String" resultType="java.lang.Integer">
+  		select count(*) from schedulelists where user_id=#{user_id}
+  	</select>
+  	<select id="getScheduleListList" parameterType="String" resultMap="ScheduleListResult">
+  		select * from schedulelists where user_id=#{user_id}
+  	</select>
+  	<select id="getScheduleListListForRemake" resultMap="ScheduleListResult" parameterType="String">
+  		select * from schedulelists where user_id=#{user_id} and sche_date &gt; to_char(sysdate,'yyyy/mm/dd')
+  	</select>
+  	<select id="checkOneScheduleList" parameterType="schedulelist.ScheduleListDataBean" resultType="int">
+  		select count(*) from schedulelists where user_id=#{user_id} and sche_date=to_char(cast(#{sche_date} as date),'yyyy/mm/dd')
+  	</select>
+  	<select id="checkIsExistAfterToday" parameterType="schedulelist.ScheduleListDataBean" resultType="int">
+  		select count(*) from schedulelists where user_id=#{user_id} and sche_date &gt; to_char(sysdate,'yyyy/mm/dd')
+  	</select>
+  	<select id="getOneScheduleList" parameterType="schedulelist.ScheduleListDataBean" resultType="schedulelist.ScheduleListDataBean">
+  		select * from schedulelists where user_id=#{user_id} and sche_date=to_char(cast(#{sche_date} as date),'yyyy/mm/dd')
+  	</select>
+  	<select id="getTodayScheduleList" parameterType="schedulelist.ScheduleListDataBean" resultType="schedulelist.ScheduleListDataBean">
+  		select * from schedulelists where user_id=#{user_id} and sche_date=to_char(sysdate,'yyyy/mm/dd')
+  	</select>
+  	<select id="weekScheList" parameterType="schedulelist.ScheduleListDataBean" resultMap="ScheduleListResult">
+		select sche_date from schedulelists where user_id=#{user_id} and sche_date between
+ 		(select #{sche_date}-to_char(#{sche_date},'D')+1 from dual) and 
+ 		(select #{sche_date}-to_char(#{sche_date},'D')+7 from dual)
+  	</select>
+  	<delete id="deleteScheList" parameterType="schedule.ScheduleDataBean">
+	  	delete from schedulelists where user_id=#{user_id} and sche_date=to_char(cast(#{sche_date} as date),'yyyy/mm/dd')
+  	</delete>
+  	<delete id="deleteScheListAll" parameterType="String">
+  		delete from schedulelists where user_id=#{user_id}
+  	</delete>
+  	<update id="updateAchieve" parameterType="schedule.ScheduleDataBean">
+  		update schedulelists set achieve=#{achieve} where user_id=#{user_id} and sche_date=to_char(sysdate,'yyyy/mm/dd')
+  	</update>
+ </mapper>

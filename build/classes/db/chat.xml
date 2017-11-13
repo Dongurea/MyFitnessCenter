@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="Chat"> 
+	
+	<select id="selectManagerChatroom" parameterType="string" resultType="int">
+		select NVL(max(num), 0) as num from chat where manager_id=#{manager_id} and user_id is null
+	</select>
+	
+	<select id="selectChatroomChatroomnum" parameterType="int" resultType="chat.ChatDataBean">
+		select * from chat where num=#{chatroomnum}
+	</select>
+	
+	<select id="selectChat" parameterType="java.util.HashMap" resultType="chat.ChatDataBean">
+		select * from chat where manager_id=#{manager_id} and user_id=#{user_id} and texttime&gt;=#{starttime} order by texttime
+	</select>
+	
+	<select id="selectChatrooms" resultType="int">
+		select count(*) from chat where user_id is null
+	</select>
+	
+	<select id="selectChatroomnum" resultType="int">
+		select num from (select * from chat where user_id is null order by DBMS_RANDOM.VALUE) where rownum = 1
+	</select>
+	
+	<insert id="insertChatroom" parameterType="string">
+		insert into chat values(seq_chat.nextval, null, #{manager_id}, null, null, null)
+	</insert>
+	
+	<insert id="insertChat" parameterType="java.util.HashMap">
+		insert into chat values(seq_chat.nextval, #{user_id}, #{manager_id}, #{text}, SYSTIMESTAMP, #{fromtext})
+	</insert>
+	
+	<update id="updateChatroom" parameterType="java.util.HashMap">
+		update chat set user_id=#{user_id}, text='회원님이 입장하셨습니다.', texttime=SYSTIMESTAMP, fromtext='user'
+		where num=#{num}
+	</update>
+	
+	<delete id="deleteChatroom" parameterType="string" >
+		delete from chat where manager_id=#{manager_id} and user_id is null
+	</delete>	
+	
+</mapper> 	

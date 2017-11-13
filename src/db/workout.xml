@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+ <mapper namespace="Workout">
+ 	<resultMap id="WorkoutResult" type="workout.WorkoutDataBean">
+		<result property="workout_name" column="workout_name" />
+		<result property="link" column="link" />
+		<result property="sec" column="sec" />
+		<result property="grade" column="grade" />
+		<result property="workout_part" column="workout_part" />
+		<result property="workout_type" column="workout_type" />
+		<result property="routine_step" column="routine_step" />
+		<result property="fat_grade" column="fat_grade" />
+		<result property="bmi_grade" column="bmi_grade" />
+	</resultMap>
+  	<insert id="insertWorkout" parameterType="workout.WorkoutDataBean">
+  		insert into workouts values( 
+  		#{workout_name}, #{link}, #{sec}, #{grade},#{workout_part},#{workout_type}, #{routine_step}, #{fat_grade}, #{bmi_grade})  		
+  	</insert>
+  	<select id="getWorkoutWithName" resultType="workout.WorkoutDataBean" parameterType="String">
+  		select * from workouts where workout_name=#{workout_name}
+  	</select>
+  	<select id="getAllWorkout" resultMap="WorkoutResult">
+  		select * from workouts
+  	</select>
+  	<select id="getGradeWorkout" parameterType="String" resultMap="WorkoutResult">
+  		select * from workouts where grade=#{grade}
+  	</select>
+  	<select id="getStartWorkout" resultMap="WorkoutResult">
+  		select * from workouts where workout_type='Stretch' and workout_name not like '%스트레%' and workout_name not like '%스트래%'
+  	</select>
+  	<select id="getEndWorkout" resultMap="WorkoutResult">
+  		select * from workouts where workout_type='Stretch' and( workout_name like '%스트레%' or workout_name like '%스트래%' )
+  	</select>
+  	<select id="selectWorkout" parameterType="String" resultMap="WorkoutResult">
+  		select * from workouts where workout_name=#{workout_name}
+  	</select>
+  	<select id="selectWorkoutsNames" parameterType="String" resultType="int">
+  		select count(*) from workouts where workout_name=#{workout_name}
+  	</select>
+  	<update id="updateWorkout" parameterType="workout.WorkoutDataBean">
+  		update workouts set link=#{link}, sec=#{sec}, grade=#{grade}, workout_part=#{workout_part},
+  		workout_type=#{workout_type}, routine_step=#{routine_step}, fat_grade=#{fat_grade}, bmi_grade=#{bmi_grade}
+  		where workout_name=#{workout_name}
+  	</update>
+  	<select id="getAutoScheWorkout" parameterType="workout.WorkoutDataBean" resultMap="WorkoutResult">
+  		select * from workouts 
+  		<trim prefix="where" prefixOverrides="AND">
+  			<if test="workout_part != null">
+  			 workout_part like '%'||#{workout_part}||'%'
+  			</if>
+  			<if test="workout_type != null">
+  		 	 AND workout_type = #{workout_type}
+  		  	</if>
+  		  	<if test="grade != null">
+  		 	 AND grade = #{grade}
+  		 	</if>
+  		 	<if test="routine_step != null and routine_step !=100">
+  		 	 AND routine_step &lt;= #{routine_step}
+  		 	</if>
+  		  	<if test="fat_grade != null and routine_step !=100">
+  		  	 AND fat_grade &lt;= #{fat_grade}
+  		 	</if>
+  		 	<if test="bmi_grade != null and routine_step !=100">
+  		 	 AND bmi_grade &lt;=#{bmi_grade}
+  		 	</if>
+  		</trim>
+  	</select>
+ </mapper>
